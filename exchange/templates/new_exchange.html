@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Exchange currency{% endblock %}
+
+{% block extracss %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+{% endblock %}
+
+
+{% block content %}
+
+<form method="post">{% csrf_token %}
+
+    <div class="row-fluid">
+      <label for="first_currency">First Currency: </label>
+      <select class="selectpicker" name='first_currency' id="first_currency" required data-show-subtext="true" data-live-search="true">
+      </select>
+    </div>
+    <div class="row-fluid">
+      <label for="second_currency">Second Currency: </label>
+      <select class="selectpicker"name='second_currency' id="second_currency" required data-show-subtext="true" data-live-search="true">
+      </select>
+    </div>
+
+
+    <input type="submit" class="btn btn-info" value="Add Exchange currencies">
+</form>
+
+{% endblock %}
+
+{% block extrajs %}
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+
+
+<script>
+(function() {
+
+    //  Getting list of currencies from API, and adding them to select
+
+  var CurrenciesAPI = "https://www.cryptonator.com/api/currencies";
+  $.getJSON( CurrenciesAPI, {
+    format: "json"
+  })
+    .done(function( data ) {
+        $.each( data.rows, function( i, item ) {
+            $(".selectpicker").append("<option data-subtext="+item.name+">"+item.code+"</option>");
+        });
+        $('.selectpicker').selectpicker('refresh');
+    });
+})();
+</script>
+
+{% endblock %}
